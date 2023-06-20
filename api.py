@@ -2,7 +2,7 @@ import requests
 import json
 
 
-class DolarVsMundoAPI:
+class DolarAPI:
     def __init__(self):
         # Lista de pares de moedas que você deseja obter cotações
         self.currency_pairs = [
@@ -30,3 +30,48 @@ class DolarVsMundoAPI:
                 cotacoes.append([self.currency_pairs[len(cotacoes)], valor_cotacao])
 
         return cotacoes
+
+class DolarAPI:
+    def __init__(self):
+        self.url = "https://api.exchangerate-api.com/v4/latest/USD"
+
+    def get_dolar_data(self):
+        response = requests.get(self.url)
+        data = response.json()
+        return data
+
+    def get_dolar_min_max(self):
+        data = self.get_dolar_data()
+        rates = data["rates"]
+        brl_rate = rates["BRL"]
+
+        # Primeiro momento
+        min1 = rates["BRL_min1"]
+        max1 = rates["BRL_max1"]
+
+        # Segundo momento
+        min2 = rates["BRL_min2"]
+        max2 = rates["BRL_max2"]
+
+        # Terceiro momento
+        min3 = rates["BRL_min3"]
+        max3 = rates["BRL_max3"]
+
+        return {
+            "primeira": {"Máxima": max1, "Mínima": min1},
+            "segunda": {"Máxima": max2, "Mínima": min2},
+            "terceira": {"Máxima": max3, "Mínima": min3}
+        }
+
+def main():
+    dolar_api = DolarAPI()
+    dolar_min_max = dolar_api.get_dolar_min_max()
+
+    print("    Máxima      Mínima")
+    for momento, valores in dolar_min_max.items():
+        maxima = valores["Máxima"]
+        minima = valores["Mínima"]
+        print(f"{momento}     {maxima}     {minima}")
+
+if __name__ == '__main__':
+    main()

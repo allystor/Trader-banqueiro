@@ -4,7 +4,7 @@ import os.path
 import time
 import requests
 import json
-from api import DolarVsMundoAPI
+from api import DolarAPI
 from google.auth.transport.requests import Request
 from google.oauth2.credentials import Credentials
 from google_auth_oauthlib.flow import InstalledAppFlow
@@ -52,7 +52,7 @@ def main():
             print(values)
 
             #adicionar ou editar valores no googlesheets
-            api = DolarVsMundoAPI()
+            api = DolarAPI()
             dolar_vs_mundo = api.obter_cotacoes()
 
             for item in dolar_vs_mundo:
